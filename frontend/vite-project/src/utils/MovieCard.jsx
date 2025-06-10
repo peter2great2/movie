@@ -78,7 +78,7 @@ const MovieCard = ({ title }) => {
 
   return (
     <div className="netflix-container">
-      <h1 className="netflix-title">MovieFlix</h1>
+      <h1 className="netflix-title">MovieBox</h1>
 
       {/* Navigation Tabs */}
       <div className="netflix-tabs">
