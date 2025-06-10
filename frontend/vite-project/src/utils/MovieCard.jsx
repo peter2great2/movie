@@ -3,10 +3,9 @@ import axios from "axios";
 import ReactPlayer from "react-player";
 import "./MovieCard.css"; // Assuming you have a CSS file for styling
 
-const MovieCard = () => {
+const MovieCard = ({ title }) => {
   const [movies, setMovies] = useState([]);
   const [activeTab, setActiveTab] = useState("popular");
-  const [activeGenre, setActiveGenre] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [trailerUrl, setTrailerUrl] = useState("");
   const [showTrailer, setShowTrailer] = useState(false);
@@ -15,27 +14,7 @@ const MovieCard = () => {
     "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI2OWUwMGI2OGQ4NGJlZDYzMjMwMDEyMTBjMmU1NDU5OCIsIm5iZiI6MTY4ODAzNDg0OS4xMDUsInN1YiI6IjY0OWQ1ZTIxMDkxZTYyMDEwYzEwZTM4ZiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.2DwKT3qRLYZKhjYPbYEbann01t32-ZIt-ZQKpdPkhqc";
   const BASE_URL = "https://api.themoviedb.org/3";
 
-  const genres = [
-    { id: 28, name: "Action" },
-    { id: 12, name: "Adventure" },
-    { id: 16, name: "Animation" },
-    { id: 35, name: "Comedy" },
-    { id: 80, name: "Crime" },
-    { id: 18, name: "Drama" },
-    { id: 10751, name: "Family" },
-    { id: 14, name: "Fantasy" },
-    { id: 36, name: "History" },
-    { id: 27, name: "Horror" },
-    { id: 10402, name: "Music" },
-    { id: 9648, name: "Mystery" },
-    { id: 10749, name: "Romance" },
-    { id: 878, name: "Sci-Fi" },
-    { id: 53, name: "Thriller" },
-    { id: 10752, name: "War" },
-    { id: 37, name: "Western" },
-  ];
-
-  const fetchMovies = async (type, genreId = null) => {
+  const fetchMovies = async (type) => {
     setIsLoading(true);
     try {
       let url;
@@ -53,9 +32,6 @@ const MovieCard = () => {
         case "upcoming":
           url = `${BASE_URL}/movie/upcoming?api_key=${API_KEY}`;
           break;
-        case "genre":
-          url = `${BASE_URL}/discover/movie?api_key=${API_KEY}&with_genres=${genreId}`;
-          break;
         default: // popular
           url = `${BASE_URL}/movie/popular?api_key=${API_KEY}`;
       }
@@ -65,6 +41,7 @@ const MovieCard = () => {
       });
 
       setMovies(response.data.results);
+      console.log("Fetched movies:", response.data.results);
     } catch (error) {
       console.error("Error fetching data:", error);
     } finally {
@@ -96,12 +73,8 @@ const MovieCard = () => {
   };
 
   useEffect(() => {
-    if (activeTab === "genre" && activeGenre) {
-      fetchMovies("genre", activeGenre);
-    } else {
-      fetchMovies(activeTab);
-    }
-  }, [activeTab, activeGenre]);
+    fetchMovies(activeTab);
+  }, [activeTab]);
 
   return (
     <div className="netflix-container">
@@ -141,29 +114,6 @@ const MovieCard = () => {
         >
           Upcoming
         </button>
-        <div className="netflix-genre-dropdown">
-          <button
-            className={`netflix-tab ${activeTab === "genre" ? "active" : ""}`}
-            onClick={() => setActiveTab("genre")}
-          >
-            Genres ▼
-          </button>
-          {activeTab === "genre" && (
-            <div className="netflix-genre-menu">
-              {genres.map((genre) => (
-                <button
-                  key={genre.id}
-                  className={`netflix-genre-item ${
-                    activeGenre === genre.id ? "active" : ""
-                  }`}
-                  onClick={() => setActiveGenre(genre.id)}
-                >
-                  {genre.name}
-                </button>
-              ))}
-            </div>
-          )}
-        </div>
       </div>
 
       {isLoading ? (
@@ -175,18 +125,20 @@ const MovieCard = () => {
               <div className="netflix-card-inner">
                 <div className="netflix-card-front">
                   <img
-                    src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                    src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}
                     alt={movie.title}
                     className="netflix-card-img"
                     onError={(e) => {
                       e.target.src =
                         "https://via.placeholder.com/500x750?text=No+Poster";
+                      featured;
                     }}
                   />
-                  <div className="netflix-card-overlay">
+                  <div className="netflix-card-overlay flex justify-center items-center">
                     <div className="netflix-card-rating">
                       ⭐ {movie.vote_average.toFixed(1)}
                     </div>
+                    <div></div>
                   </div>
                 </div>
                 <div className="netflix-card-back">
@@ -226,7 +178,7 @@ const MovieCard = () => {
                 setTrailerUrl("");
               }}
             >
-              &times;
+              ×
             </button>
             <div className="netflix-trailer-player">
               <ReactPlayer

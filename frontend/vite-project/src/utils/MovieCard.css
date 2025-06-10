@@ -42,47 +42,6 @@
   color: white;
 }
 
-.netflix-genre-dropdown {
-  position: relative;
-}
-
-.netflix-genre-menu {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  background-color: #141414;
-  border: 1px solid #333;
-  border-radius: 4px;
-  padding: 0.5rem;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0.5rem;
-  z-index: 100;
-  width: 300px;
-  max-height: 300px;
-  overflow-y: auto;
-}
-
-.netflix-genre-item {
-  background: #333;
-  color: white;
-  border: none;
-  padding: 0.5rem;
-  font-size: 0.9rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  border-radius: 4px;
-  text-align: left;
-}
-
-.netflix-genre-item:hover {
-  background: #555;
-}
-
-.netflix-genre-item.active {
-  background-color: #e50914;
-}
-
 .netflix-row {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -221,11 +180,6 @@
   .netflix-row {
     grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
   }
-
-  .netflix-genre-menu {
-    grid-template-columns: repeat(2, 1fr);
-    width: 250px;
-  }
 }
 
 @media (max-width: 768px) {
@@ -270,27 +224,13 @@
     font-size: 0.8rem;
   }
 
-  .netflix-genre-menu {
-    grid-template-columns: 1fr;
-    width: 200px;
-  }
-
   .netflix-tabs {
     flex-direction: column;
     align-items: flex-start;
   }
-
-  .netflix-genre-dropdown {
-    width: 100%;
-  }
-
-  .netflix-genre-menu {
-    width: 100%;
-  }
 }
 
-/* Add these new styles to your existing Card.css */
-
+/* Trailer Modal Styles */
 .netflix-trailer-modal {
   position: fixed;
   top: 0;

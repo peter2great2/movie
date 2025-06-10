@@ -5,7 +5,7 @@ import "./App.css";
 const App = () => {
   return (
     <div className="app">
-      <MovieCard />
+      <MovieCard title="Movie Title" />
     </div>
   );
 };
