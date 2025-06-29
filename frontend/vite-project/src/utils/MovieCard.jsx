@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import ReactPlayer from "react-player";
-import "./MovieCard.css"; // Assuming you have a CSS file for styling
+import "./MovieCard.css";
+import { FaVoteYea } from "react-icons/fa";
+import {} from "react-icons/fi";
 
 const MovieCard = ({ title }) => {
   const [movies, setMovies] = useState([]);
@@ -121,24 +123,29 @@ const MovieCard = ({ title }) => {
       ) : (
         <div className="netflix-row">
           {movies.map((movie) => (
-            <div key={movie.id} className="netflix-card">
+            <div key={movie.id || movie.title} className="netflix-card">
               <div className="netflix-card-inner">
                 <div className="netflix-card-front">
                   <img
-                    src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}
+                    src={
+                      movie.poster_path
+                        ? `https://image.tmdb.org/t/p/w300${movie.poster_path}`
+                        : "https://via.placeholder.com/500x750?text=No+Poster"
+                    }
                     alt={movie.title}
                     className="netflix-card-img"
                     onError={(e) => {
                       e.target.src =
                         "https://via.placeholder.com/500x750?text=No+Poster";
-                      featured;
                     }}
                   />
                   <div className="netflix-card-overlay flex justify-center items-center">
                     <div className="netflix-card-rating">
-                      ⭐ {movie.vote_average.toFixed(1)}
+                      ⭐ {movie.vote_average?.toFixed(1) || "N/A"}
                     </div>
-                    <div></div>
+                    <div>
+                      <FaVoteYea className="netflix-card-icon" size={16} />
+                    </div>
                   </div>
                 </div>
                 <div className="netflix-card-back">
@@ -149,10 +156,16 @@ const MovieCard = ({ title }) => {
                       : "No description available"}
                   </p>
                   <div className="netflix-card-meta">
-                    <span>{new Date(movie.release_date).getFullYear()}</span>
                     <span>
-                      {Math.floor(movie.runtime / 60)}h {movie.runtime % 60}m
+                      {movie.release_date
+                        ? new Date(movie.release_date).getFullYear()
+                        : "Unknown Year"}
                     </span>
+                    {movie.runtime && (
+                      <span>
+                        {Math.floor(movie.runtime / 60)}h {movie.runtime % 60}m
+                      </span>
+                    )}
                   </div>
                   <button
                     className="netflix-card-button"
