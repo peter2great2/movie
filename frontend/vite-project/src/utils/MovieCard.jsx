@@ -11,6 +11,7 @@ const MovieCard = ({ title }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [trailerUrl, setTrailerUrl] = useState("");
   const [showTrailer, setShowTrailer] = useState(false);
+  const [movieOfTheDay, setMovieOfTheDay] = useState(null);
 
   const API_KEY =
     "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI2OWUwMGI2OGQ4NGJlZDYzMjMwMDEyMTBjMmU1NDU5OCIsIm5iZiI6MTY4ODAzNDg0OS4xMDUsInN1YiI6IjY0OWQ1ZTIxMDkxZTYyMDEwYzEwZTM4ZiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.2DwKT3qRLYZKhjYPbYEbann01t32-ZIt-ZQKpdPkhqc";
@@ -43,6 +44,11 @@ const MovieCard = ({ title }) => {
       });
 
       setMovies(response.data.results);
+      setMovieOfTheDay(
+        response.data.results[
+          Math.floor(Math.random() * response.data.results.length)
+        ]
+      );
       console.log("Fetched movies:", response.data.results);
     } catch (error) {
       console.error("Error fetching data:", error);
